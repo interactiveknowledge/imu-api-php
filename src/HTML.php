@@ -45,9 +45,8 @@
 ** REPLACEMENT, REPAIR OR RESUPPLY OF THE RELEVANT GOODS OR SERVICES
 ** (INCLUDING BUT NOT LIMITED TO SOFTWARE) OR THE PAYMENT OF THE COST OF SAME.
 */
-require_once dirname(__FILE__) . '/IMu.php';
-require_once IMu::$api . '/Document.php';
-require_once IMu::$api . '/Trace.php';
+
+namespace IMu;
 
 class IMuHTMLDocument extends IMuDocument
 {

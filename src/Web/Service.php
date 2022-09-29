@@ -45,11 +45,8 @@
 ** REPLACEMENT, REPAIR OR RESUPPLY OF THE RELEVANT GOODS OR SERVICES
 ** (INCLUDING BUT NOT LIMITED TO SOFTWARE) OR THE PAYMENT OF THE COST OF SAME.
 */
-require_once dirname(__FILE__) . '/../IMu.php';
-require_once IMu::$lib . '/Exception.php';
-require_once IMu::$lib . '/Handler.php';
-require_once IMu::$lib . '/Session.php';
-require_once IMu::$lib . '/Trace.php';
+
+namespace IMu;
 
 /*!
 ** A helper class for implementing %IMu web services.

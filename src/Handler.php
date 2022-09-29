@@ -45,8 +45,8 @@
 ** REPLACEMENT, REPAIR OR RESUPPLY OF THE RELEVANT GOODS OR SERVICES
 ** (INCLUDING BUT NOT LIMITED TO SOFTWARE) OR THE PAYMENT OF THE COST OF SAME.
 */
-require_once dirname(__FILE__) . '/IMu.php';
-require_once IMu::$api . '/Session.php';
+
+namespace IMu;
 
 /*!
 ** Provides a general low-level interface to creating server-side objects.
