@@ -56,6 +56,9 @@
 **
 ** @since 1.0
 */
+
+namespace IMu;
+
 class IMu
 {
 	/*!
