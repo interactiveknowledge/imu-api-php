@@ -48,6 +48,7 @@
 
 namespace IMu;
 
+use IMu\Trace;
 
 /*!
 ** Manages a connection to an IMu server.

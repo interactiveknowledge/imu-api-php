@@ -48,6 +48,9 @@
 
 namespace IMu;
 
+use IMu\Exception;
+use IMu\Trace;
+
 class Document
 {
 	/* Ideally IMuDocument would be a subclass of DOMDocument (as it was
