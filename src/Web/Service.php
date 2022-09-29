@@ -277,7 +277,7 @@ class WebService
 }
 
 /**
- * @details Write an error to the trace file and throw an IMuException.
+ * @details Write an error to the trace file and throw an IMuIMuException.
  * @note Optionally, any number of additional parameters can be supplied when
  * calling this function. Usually these are messages or values that provide
  * more information about the error that is being raised.
@@ -291,23 +291,23 @@ class WebService
  * @param int $code
  *   Usually the HTTP error code that should be used in the HTTP response.
  * @param string $id
- *   A string that identifies the exception.
+ *   A string that identifies the IMuException.
  *
- * @throws Exception
+ * @throws IMuException
  */
 function
 raise($code, $id)
 {
-	$exception = new Exception($id);
+	$IMuException = new IMuException($id);
 
 	$args = func_get_args();
 	array_shift($args);
 	array_shift($args);
-	$exception->setArgs($args);
+	$IMuException->setArgs($args);
 
-	$exception->setCode($code);
+	$IMuException->setCode($code);
 
-	Trace::write(2, 'raising exception %s', $exception);
-	throw $exception;
+	Trace::write(2, 'raising IMuException %s', $IMuException);
+	throw $IMuException;
 }
 ?>

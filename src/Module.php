@@ -132,7 +132,7 @@ class Module extends Handler
 	** @returns int
 	**   The number of sets (including this one) registered in the server.
 	**
-	** @throws Exception
+	** @throws IMuException
 	**   A server-side error occurred.
 	*/
 	public function
@@ -158,7 +158,7 @@ class Module extends Handler
 	** @returns int
 	**   The number of sets (including these ones) registered in the server.
 	**
-	** @throws Exception
+	** @throws IMuException
 	**   A server-side error occurred.
 	*/
 	public function
@@ -189,7 +189,7 @@ class Module extends Handler
 	** @returns int
 	**   The number of aliases (including this one) registered in the server.
 	**
-	** @throws Exception
+	** @throws IMuException
 	**   A server-side error occurred.
 	*/
 	public function
@@ -215,7 +215,7 @@ class Module extends Handler
 	** @returns int
 	**   The number of sets (including these ones) registered in the server.
 	**
-	** @throws Exception
+	** @throws IMuException
 	**   A server-side error occurred.
 	*/ 
 	public function
@@ -243,7 +243,7 @@ class Module extends Handler
 	** @returns int
 	**   The number of sets (including this one) registered in the server.
 	**
-	** @throws Exception
+	** @throws IMuException
 	**   A server-side error occurred.
 	*/
 	public function
@@ -269,7 +269,7 @@ class Module extends Handler
 	** @returns int
 	**   The number sets (including these ones) registered in the server.
 	**
-	** @throws Exception
+	** @throws IMuException
 	*/
 	public function
 	addSortSets($sets)
@@ -313,7 +313,7 @@ class Module extends Handler
 	** @returns ModuleFetchResult
 	**   An `ModuleFetchResult` object.
 	**
-	** @throws Exception
+	** @throws IMuException
 	**   If a server-side error occured.
 	*/
 	public function
@@ -360,7 +360,7 @@ class Module extends Handler
 	**   The number of records found. 
 	**   This will be either ``1`` if the record was found or ``0`` if not found.
 	**
-	** @throws Exception
+	** @throws IMuException
 	**   If a server-side error occured.
 	*/
 	public function
@@ -378,7 +378,7 @@ class Module extends Handler
 	** @returns int
 	**   The number of records found.
 	**
-	** @throws Exception
+	** @throws IMuException
 	**   If a server-side error occured.
 	*/
 	public function
@@ -399,7 +399,7 @@ class Module extends Handler
 	** @returns int
 	**   An estimate of the number of records found.
 	**
-	** @throws Exception
+	** @throws IMuException
 	**   If a server-side error occurred.
 	*/
 	public function
@@ -426,7 +426,7 @@ class Module extends Handler
 	** @returns int
 	**   An estimate of the number of records found.
 	**
-	** @throws Exception
+	** @throws IMuException
 	**   If a server-side error occurred.
 	*/
 	public function
@@ -491,7 +491,7 @@ class Module extends Handler
 	** @returns int
 	**   The number of records found.
 	**
-	** @throws Exception
+	** @throws IMuException
 	**   If a server-side error occured.
 	*/
 	public function
@@ -522,7 +522,7 @@ class Module extends Handler
 	**   An array containing the report information if the report flag has been
 	**   specified. Otherwise the result will be ``null``.
 	**
-	** @throws Exception
+	** @throws IMuException
 	**   If a server-side error occurred.
 	*/
 	public function

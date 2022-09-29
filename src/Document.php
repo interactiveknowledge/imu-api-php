@@ -48,7 +48,7 @@
 
 namespace IMu;
 
-use IMu\Exception;
+use IMu\IMuException;
 use IMu\Trace;
 
 class Document

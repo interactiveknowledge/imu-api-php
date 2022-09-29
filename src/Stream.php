@@ -89,13 +89,13 @@ class Stream
 			$this->getToken();
 			$what = $this->getValue();
 		}
-		catch (Exception $e)
+		catch (IMuException $e)
 		{
 			throw $e;
 		}
-		catch (Exception $e)
+		catch (IMuException $e)
 		{
-			throw new Exception("StreamGet", $e->getMessage());
+			throw new IMuException("StreamGet", $e->getMessage());
 		}
 		return $what;
 	}
@@ -109,13 +109,13 @@ class Stream
 			$this->putLine();
 			$this->putFlush();
 		}
-		catch (Exception $e)
+		catch (IMuException $e)
 		{
 			throw $e;
 		}
-		catch (Exception $e)
+		catch (IMuException $e)
 		{
-			throw new Exception("StreamPut", $e->getMessage());
+			throw new IMuException("StreamPut", $e->getMessage());
 		}
 	}
 
@@ -190,7 +190,7 @@ class Stream
 		if ($this->_token == 'binary')
 			return $this->_file;
 
-		throw new Exception('StreamSyntaxToken', $this->_token);
+		throw new IMuException('StreamSyntaxToken', $this->_token);
 	}
 
 	private function
@@ -308,7 +308,7 @@ class Stream
 				$this->getNext();
 			}
 			if ($this->_string == '')
-				throw new Exception('StreamSyntaxBinary');
+				throw new IMuException('StreamSyntaxBinary');
 			$size = $this->_string + 0;
 			while ($this->_next != "\n")
 				$this->getNext();
@@ -325,10 +325,10 @@ class Stream
 					$read = $left;
 				$data = fread($this->_socket, $read);
 				if ($data === false)
-					throw new Exception('StreamInput');
+					throw new IMuException('StreamInput');
 				$done = strlen($data);
 				if ($done == 0)
-					throw new Exception('StreamEOF', 'binary');
+					throw new IMuException('StreamEOF', 'binary');
 				fwrite($temp, $data);
 				$left -= $done;
 			}
@@ -349,7 +349,7 @@ class Stream
 	{
 		$c = fgetc($this->_socket);
 		if ($c === false)
-			throw new Exception('StreamEOF', 'character');
+			throw new IMuException('StreamEOF', 'character');
 		$this->_next = $c;
 		return $this->_next;
 	}
@@ -389,7 +389,7 @@ class Stream
 		else if ($type == 'resource')
 			$this->putResource($what);
 		else
-			throw new Exception('StreamType', $type);
+			throw new IMuException('StreamType', $type);
 	}
 
 	private function
@@ -448,10 +448,10 @@ class Stream
 	putResource($what)
 	{
 		if (fseek($what, 0, SEEK_END) < 0)
-			throw new Exception('StreamFileSeek');
+			throw new IMuException('StreamFileSeek');
 		$size = ftell($what);
 		if (fseek($what, 0, SEEK_SET) < 0)
-			throw new Exception('StreamFileSeek');
+			throw new IMuException('StreamFileSeek');
 
 		$this->putData('*');
 		$this->putData($size);
@@ -465,7 +465,7 @@ class Stream
 				$need = $left;
 			$data = fread($what, $need);
 			if ($data === false)
-				throw new Exception('StreamFileRead');
+				throw new IMuException('StreamFileRead');
 			$done = strlen($data);
 			if ($done == 0)
 				break;
@@ -522,9 +522,9 @@ class Stream
 			{
 				$wrote = fwrite($this->_socket, $this->_buffer);
 				if ($wrote === false)
-					throw new Exception('StreamWriteError');
+					throw new IMuException('StreamWriteError');
 				if ($wrote == 0)
-					throw new Exception('StreamWriteError');
+					throw new IMuException('StreamWriteError');
 				$this->_buffer = substr($this->_buffer, $wrote);
 				$this->_length -= $wrote;
 			}

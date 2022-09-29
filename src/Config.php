@@ -62,7 +62,7 @@ class Config
 	{
 		$doc = new DOMDocument;
 		if (! @$doc->load($file))
-			throw new Exception('ConfigLoad', $file);
+			throw new IMuException('ConfigLoad', $file);
 		$xpath = new DOMXpath($doc);
 		$values = $this->loadNode($xpath, $doc->documentElement);
 		$this->mergeValue($this->values, $values);

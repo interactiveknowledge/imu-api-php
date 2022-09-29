@@ -291,7 +291,7 @@ class Session
 		  	return $this->getTimeout();
 			break;
 		  default:
-		  	throw new Exception('SessionProperty', $name);
+		  	throw new IMuException('SessionProperty', $name);
 		}
 	}
 
@@ -319,7 +319,7 @@ class Session
 		  	return $this->setTimeout($value);
 			break;
 		  default:
-		  	throw new Exception('SessionProperty', $name);
+		  	throw new IMuException('SessionProperty', $name);
 		}
 	}
 
@@ -327,7 +327,7 @@ class Session
 	/*!
 	** Opens a connection to an IMu server.
 	**
-	** @throws Exception
+	** @throws IMuException
 	**   The connection could not be opened.
 	*/
 	public function
@@ -339,7 +339,7 @@ class Session
 		Trace::write(2, 'connecting to %s:%d', $this->_host, $this->_port);
 		$socket = @fsockopen($this->_host, $this->_port, $errno, $errstr);
 		if ($socket === false)
-			throw new Exception('SessionConnect', $this->_host, $this->_port,
+			throw new IMuException('SessionConnect', $this->_host, $this->_port,
 				$errstr);
 		ce::write(2, 'connected ok');
 		if ($this->_timeout !== null)
@@ -383,10 +383,10 @@ class Session
 	**   process specifically for handling the newly logged in user's requests.
 	**   This value defaults to ``true``.
 	**
-	** @throws Exception
+	** @throws IMuException
 	**   The login request failed.
 	**
-	** @throws Exception
+	** @throws IMuException
 	**   A low-level socket communication error occurred.
 	**
 	** @example
@@ -446,7 +446,7 @@ class Session
 	** @returns array
 	**   An associative array containg the server's response.
 	**
-	** @throws Exception
+	** @throws IMuException
 	**   A server-side error occurred.
 	*/
 	public function
@@ -465,7 +465,7 @@ class Session
 		$response = $this->_stream->get();
 		$type = gettype($response);
 		if ($type != 'array')
-			throw new Exception('SessionResponse', $type);
+			throw new IMuException('SessionResponse', $type);
 
 		if (array_key_exists('context', $response))
 			$this->_context = $response['context'];
@@ -489,7 +489,7 @@ class Session
 			else if (array_key_exists('id', $response))
 				$id = $response['id'];
 
-			$e = new Exception($id);
+			$e = new IMuException($id);
 
 			if (isset($response['args']))
 				$e->setArgs($response['args']);
@@ -497,7 +497,7 @@ class Session
 			if (isset($response['code']))
 				$e->setCode($response['code']);
 
-			Trace::write(2, 'throwing exception %s', $e->__toString());
+			Trace::write(2, 'throwing IMuException %s', $e->__toString());
 
 			throw $e;
 		}

@@ -48,11 +48,12 @@
 
 namespace IMu;
 
+use \Exception;
 use IMu\Trace;
 
 
 /*!
-** Class for IMu-specific exceptions.
+** Class for IMu-specific IMuIMuExceptions.
 **
 ** @usage
 **   require_once IMu::$lib . '/Exception.php';
@@ -60,18 +61,18 @@ use IMu\Trace;
 **
 ** @since 1.0
 */
-class Exception extends Exception
+class IMuException extends Exception
 {
 	/* Constructor */
 	/*!
-	** Creates an IMu specific exception.
+	** Creates an IMu specific IMuException.
 	**
 	** @param $id string
-	**   A string exception code.
+	**   A string IMuException code.
 	**
 	** @param $args mixed
 	**   Any additional arguments used to provide further informatiom about the
-	**   exception.
+	**   IMuException.
 	*/
 	public function
 	__construct($id)

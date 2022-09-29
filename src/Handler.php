@@ -208,7 +208,7 @@ class Handler
 		  case 'session':
 		  	return $this->getSession();
 		  default:
-		  	throw new Exception('HandlerProperty', $name);
+		  	throw new IMuException('HandlerProperty', $name);
 		}
 	}
 
@@ -228,9 +228,9 @@ class Handler
 		  case 'name':
 		  	return $this->setName($value);
 		  case 'session':
-		  	throw new Exception('HandlerSessionReadOnly');
+		  	throw new IMuException('HandlerSessionReadOnly');
 		  default:
-		  	throw new Exception('HandlerProperty', $name);
+		  	throw new IMuException('HandlerProperty', $name);
 		}
 	}
 
@@ -249,7 +249,7 @@ class Handler
 	** @returns mixed
 	**   An `Object` containing the result returned by the server-side method.
 	**
-	** @throws Exception
+	** @throws IMuException
 	**   A server-side error occurred.
 	*/
 	public function
@@ -274,7 +274,7 @@ class Handler
 	** @returns mixed
 	**   An `Object` containing the server's response.
 	**
-	** @throws Exception
+	** @throws IMuException
 	**   A server-side error occurred.
 	*/
 	public function

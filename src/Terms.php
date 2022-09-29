@@ -75,7 +75,7 @@ class Terms
 		$kind = strtolower($kind);
 		if ($kind != 'and' && $kind != 'or')
 		{
-			throw new Exception("Illegal kind: $kind");
+			throw new IMuException("Illegal kind: $kind");
 		}
 		$this->kind = $kind;
 		$this->list = array();
