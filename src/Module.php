@@ -52,7 +52,7 @@ namespace IMu;
 /*!
 ** Provides access to an EMu module.
 ** 
-** @extends IMuHandler
+** @extends Handler
 **
 ** @usage
 **   require_once IMu::$lib . '/Module.php';
@@ -60,7 +60,7 @@ namespace IMu;
 **
 ** @since 1.0
 */
-class IMuModule extends IMuHandler
+class Module extends Handler
 {
 	/* Constructors */
 	/*!
@@ -588,7 +588,7 @@ class IMuModule extends IMuHandler
 **
 ** @since 1.0
 */
-class IMuModuleFetchResult
+class ModuleFetchResult
 {
 	/* Properties */
 	/*!

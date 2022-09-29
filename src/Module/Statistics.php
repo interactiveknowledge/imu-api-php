@@ -48,7 +48,7 @@
 
 namespace IMu;
 
-class IMuStatistics extends IMuModule
+class Statistics extends Module
 {
 	public function
 	__construct($session = false)

@@ -48,7 +48,7 @@
 
 namespace IMu;
 
-class IMuStream
+class Stream
 {
 	/* Static Properties */
 	public static function

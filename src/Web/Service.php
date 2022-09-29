@@ -54,7 +54,7 @@ namespace IMu;
 ** @copyright 2011-2013 KE SOFTWARE PTY LTD
 ** @since 2.0
 **/
-class IMuWebService
+class WebService
 {
     /**
      * @details The base web service directory. Supplied in the constructor.

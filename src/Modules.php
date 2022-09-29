@@ -48,7 +48,7 @@
 
 namespace IMu;
 
-class IMuModules extends IMuHandler
+class Modules extends Handler
 {
 	/* Constructor */
 	public function
@@ -268,7 +268,7 @@ class IMuModules extends IMuHandler
 	}
 }
 
-class IMuModulesFetchResult
+class ModulesFetchResult
 {
 	public $count;
 	public $current;
@@ -287,7 +287,7 @@ class IMuModulesFetchResult
 	}
 }
 
-class IMuModulesFetchModule
+class ModulesFetchModule
 {
 	public $hits;
 	public $index;
@@ -304,7 +304,7 @@ class IMuModulesFetchModule
 	}
 }
 
-class IMuModulesFetchPosition
+class ModulesFetchPosition
 {
 	public $flag;
 	public $offset;
@@ -317,7 +317,7 @@ class IMuModulesFetchPosition
 	}
 }
 
-class IMuModulesFetchManyResult
+class ModulesFetchManyResult
 {
 	public $count;
 	public $rows;

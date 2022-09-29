@@ -48,7 +48,7 @@
 
 namespace IMu;
 
-class IMuHTMLDocument extends IMuDocument
+class HTMLDocument extends Document
 {
 	public function
 	__construct($public = 'strict', $url = '')
@@ -151,7 +151,7 @@ EOF;
 	}
 }
 
-class IMuHTMLElement extends IMuDocumentElement
+class HTMLElement extends DocumentElement
 {
 	public function
 	addClass($value)

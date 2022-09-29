@@ -48,7 +48,7 @@
 
 namespace IMu;
 
-class IMuXMLDocument extends IMuDocument
+class XMLDocument extends Document
 {
 	public function
 	__construct($name = null, $public = null, $system = null)

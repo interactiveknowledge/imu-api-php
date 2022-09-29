@@ -47,7 +47,7 @@
 */
 namespace IMu;
 
-class IMuConfig
+class Config
 {
 	public function
 	__construct()

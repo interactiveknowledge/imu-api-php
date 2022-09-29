@@ -58,7 +58,7 @@ namespace IMu;
 **
 ** @since 1.0
 */
-class IMuException extends Exception
+class Exception extends Exception
 {
 	/* Constructor */
 	/*!

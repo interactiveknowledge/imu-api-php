@@ -57,7 +57,7 @@ namespace IMu;
 **
 ** @since 1.0
 */
-class IMuHandler
+class Handler
 {
 	/* Constructor */
 	/*!

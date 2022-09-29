@@ -48,7 +48,7 @@
 
 namespace IMu;
 
-class IMuRSS
+class RSS
 {
 	public $encoding;
 
@@ -150,7 +150,7 @@ class IMuRSS
 	private $items;
 }
 
-class IMuRSSItem
+class RSSItem
 {
 	public $author;
 	public $category;

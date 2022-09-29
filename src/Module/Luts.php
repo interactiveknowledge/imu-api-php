@@ -47,7 +47,7 @@
 */
 
 namespace IMu;
-class IMuLuts extends IMuModule
+class Luts extends Module
 {
 	public function
 	__construct($session = null)

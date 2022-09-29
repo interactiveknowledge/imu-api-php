@@ -52,7 +52,7 @@ namespace IMu;
 **
 ** Inspired by CPAN perl package MIME::Types
 */
-class IMuMIME
+class MIME
 {
 	public static function
 	byFile($file)
@@ -170,7 +170,7 @@ class IMuMIME
 	}
 }
 
-class IMuMIMEType
+class MIMEType
 {
 	public function
 	__construct($type)

@@ -48,7 +48,7 @@
 
 namespace IMu;
 
-class IMuDocument
+class Document
 {
 	/* Ideally IMuDocument would be a subclass of DOMDocument (as it was
 	** in earlier IMu versions).
@@ -232,7 +232,7 @@ class IMuDocument
 	protected $_stack;
 }
 
-class IMuDocumentElement extends DOMElement
+class DocumentElement extends DOMElement
 {
 	public $document;
 

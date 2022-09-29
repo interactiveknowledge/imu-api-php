@@ -48,7 +48,7 @@
 
 namespace IMu;
 
-class IMuParams
+class Params
 {
 	const REPEATS_NEVER = 0;
 	const REPEATS_AS_NEEDED = 1;

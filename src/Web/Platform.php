@@ -48,7 +48,7 @@
 
 namespace IMu;
 
-class IMuWebPlatform
+class WebPlatform
 {
 	public function
 	__construct()

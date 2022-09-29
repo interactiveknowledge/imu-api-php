@@ -48,7 +48,7 @@
 
 namespace IMu;
 
-class IMuRegistry extends IMuModule
+class Registry extends Module
 {
 	public function
 	__construct($session = null)

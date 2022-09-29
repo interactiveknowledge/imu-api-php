@@ -60,7 +60,7 @@
 **
 ** @since 1.0
 */
-class IMuTerms
+class Terms
 {
 	/* Constructor */
 	/*!

@@ -67,7 +67,7 @@ namespace IMu;
 **   $session = new IMuSession();
 **   $session->connect();
 */
-class IMuSession
+class Session
 {
 	/* Static Properties */
 	/*!
