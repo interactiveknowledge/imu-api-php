@@ -1,0 +1,27 @@
+{
+  "name": "interactiveknowledge/imu-api-php",
+  "type": "library",
+  "description": "IMu PHP API",
+  "keywords": [
+      "framework",
+      "http",
+      "rest",
+      "web service",
+      "curl",
+      "client",
+      "HTTP client"
+  ],
+  "homepage": "https://github.com/interactiveknowledge/imu-api-php",
+  "license": "https://github.com/axiell/imu-api-php/blob/master/licence.txt",
+
+  "extra": {
+      "branch-alias": {
+          "dev-master": "master"
+      }
+  },
+  "autoload": {
+      "psr-4": {
+          "Imu\\": "src/"
+      }
+  }
+}
