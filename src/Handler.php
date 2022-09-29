@@ -63,8 +63,8 @@ class Handler
 	/*!
 	** Creates an object which can be used to interact with server-side objects.
 	** 
-	** @param $session IMuSession
-	**   An `IMuSession` object [$<link>(:session:session)] to be used to
+	** @param $session Session
+	**   An `Session` object [$<link>(:session:session)] to be used to
 	**   communicate with the IMu server.
 	**
 	**   If this parameter is not supplied, a new session is created
@@ -76,7 +76,7 @@ class Handler
 	__construct($session = null)
 	{
 		if ($session === null)
-			$this->_session = new IMuSession;
+			$this->_session = new Session;
 		else
 			$this->_session = $session;
 
@@ -95,7 +95,7 @@ class Handler
 	**
 	**   To have any effect this must be set before any object methods are
 	**   called. This property is usually only set by sub-classes of
-	**   `IMuHandler` [$<link>(:handler:handler)].
+	**   `Handler` [$<link>(:handler:handler)].
 	*/
 	public function
 	getCreate()
@@ -208,7 +208,7 @@ class Handler
 		  case 'session':
 		  	return $this->getSession();
 		  default:
-		  	throw new IMuException('HandlerProperty', $name);
+		  	throw new Exception('HandlerProperty', $name);
 		}
 	}
 
@@ -228,9 +228,9 @@ class Handler
 		  case 'name':
 		  	return $this->setName($value);
 		  case 'session':
-		  	throw new IMuException('HandlerSessionReadOnly');
+		  	throw new Exception('HandlerSessionReadOnly');
 		  default:
-		  	throw new IMuException('HandlerProperty', $name);
+		  	throw new Exception('HandlerProperty', $name);
 		}
 	}
 
@@ -249,7 +249,7 @@ class Handler
 	** @returns mixed
 	**   An `Object` containing the result returned by the server-side method.
 	**
-	** @throws IMuException
+	** @throws Exception
 	**   A server-side error occurred.
 	*/
 	public function
@@ -274,7 +274,7 @@ class Handler
 	** @returns mixed
 	**   An `Object` containing the server's response.
 	**
-	** @throws IMuException
+	** @throws Exception
 	**   A server-side error occurred.
 	*/
 	public function

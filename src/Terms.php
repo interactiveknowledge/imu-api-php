@@ -51,8 +51,8 @@
 ** IMu server.
 **
 ** A `Terms` object can be passed to the **findTerms( )** 
-** [$<link>(:module:findTerms)] method of either a `IMuModule`
-** [$<link>(:module:module)] or `IMuModules` object.
+** [$<link>(:module:findTerms)] method of either a `Module`
+** [$<link>(:module:module)] or `Modules` object.
 **
 ** @usage
 **  require_once IMu::$lib . '/Terms.php';
@@ -139,7 +139,7 @@ class Terms
 	public function
 	addTerms($kind)
 	{
-		$child = new IMuTerms($kind);
+		$child = new Terms($kind);
 		$this->list[] = $child;
 		return($child);
 	}

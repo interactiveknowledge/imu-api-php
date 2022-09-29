@@ -48,6 +48,8 @@
 
 namespace IMu;
 
+use IMu\Trace;
+
 
 /*!
 ** Class for IMu-specific exceptions.
@@ -80,7 +82,7 @@ class Exception extends Exception
 		$args = func_get_args();
 		array_shift($args);
 		$this->_args = $args;
-		IMuTrace::write(2, 'exception: %s', $this->__toString());
+		Trace::write(2, 'exception: %s', $this->__toString());
 	}
 
 	/* Properties */

@@ -89,13 +89,13 @@ class Stream
 			$this->getToken();
 			$what = $this->getValue();
 		}
-		catch (IMuException $e)
+		catch (Exception $e)
 		{
 			throw $e;
 		}
 		catch (Exception $e)
 		{
-			throw new IMuException("StreamGet", $e->getMessage());
+			throw new Exception("StreamGet", $e->getMessage());
 		}
 		return $what;
 	}
@@ -109,13 +109,13 @@ class Stream
 			$this->putLine();
 			$this->putFlush();
 		}
-		catch (IMuException $e)
+		catch (Exception $e)
 		{
 			throw $e;
 		}
 		catch (Exception $e)
 		{
-			throw new IMuException("StreamPut", $e->getMessage());
+			throw new Exception("StreamPut", $e->getMessage());
 		}
 	}
 
@@ -152,11 +152,11 @@ class Stream
 					// Extension - allow simple identifiers
 					$name = $this->_string;
 				else
-					throw new IMuException('StreamSyntaxName', $this->_token);
+					throw new ('StreamSyntaxName', $this->_token);
 
 				$this->getToken();
 				if ($this->_token != ':')
-					throw new IMuException('StreamSyntaxColon', $this->_token);
+					throw new eption('StreamSyntaxColon', $this->_token);
 
 				$this->getToken();
 				$array[$name] = $this->getValue();
@@ -190,7 +190,7 @@ class Stream
 		if ($this->_token == 'binary')
 			return $this->_file;
 
-		throw new IMuException('StreamSyntaxToken', $this->_token);
+		throw new Exception('StreamSyntaxToken', $this->_token);
 	}
 
 	private function
@@ -231,7 +231,7 @@ class Stream
 							$this->getNext();
 						}
 						if ($str == '')
-							throw new IMuException('StreamSyntaxUnicode');
+							throw new eption('StreamSyntaxUnicode');
 						$this->_next = chr($str);
 					}
 				}
@@ -308,7 +308,7 @@ class Stream
 				$this->getNext();
 			}
 			if ($this->_string == '')
-				throw new IMuException('StreamSyntaxBinary');
+				throw new Exception('StreamSyntaxBinary');
 			$size = $this->_string + 0;
 			while ($this->_next != "\n")
 				$this->getNext();
@@ -316,7 +316,7 @@ class Stream
 			// Save data into a temporary file
 			$temp = tmpfile();
 			if ($temp === false)
-				throw new IMuException('StreamTempFile', sys_get_temp_dir());
+				throw new eption('StreamTempFile', sys_get_temp_dir());
 			$left = $size;
 			while ($left > 0)
 			{
@@ -325,10 +325,10 @@ class Stream
 					$read = $left;
 				$data = fread($this->_socket, $read);
 				if ($data === false)
-					throw new IMuException('StreamInput');
+					throw new Exception('StreamInput');
 				$done = strlen($data);
 				if ($done == 0)
-					throw new IMuException('StreamEOF', 'binary');
+					throw new Exception('StreamEOF', 'binary');
 				fwrite($temp, $data);
 				$left -= $done;
 			}
@@ -349,7 +349,7 @@ class Stream
 	{
 		$c = fgetc($this->_socket);
 		if ($c === false)
-			throw new IMuException('StreamEOF', 'character');
+			throw new Exception('StreamEOF', 'character');
 		$this->_next = $c;
 		return $this->_next;
 	}
@@ -389,7 +389,7 @@ class Stream
 		else if ($type == 'resource')
 			$this->putResource($what);
 		else
-			throw new IMuException('StreamType', $type);
+			throw new Exception('StreamType', $type);
 	}
 
 	private function
@@ -448,10 +448,10 @@ class Stream
 	putResource($what)
 	{
 		if (fseek($what, 0, SEEK_END) < 0)
-			throw new IMuException('StreamFileSeek');
+			throw new Exception('StreamFileSeek');
 		$size = ftell($what);
 		if (fseek($what, 0, SEEK_SET) < 0)
-			throw new IMuException('StreamFileSeek');
+			throw new Exception('StreamFileSeek');
 
 		$this->putData('*');
 		$this->putData($size);
@@ -465,7 +465,7 @@ class Stream
 				$need = $left;
 			$data = fread($what, $need);
 			if ($data === false)
-				throw new IMuException('StreamFileRead');
+				throw new Exception('StreamFileRead');
 			$done = strlen($data);
 			if ($done == 0)
 				break;
@@ -522,9 +522,9 @@ class Stream
 			{
 				$wrote = fwrite($this->_socket, $this->_buffer);
 				if ($wrote === false)
-					throw new IMuException('StreamWriteError');
+					throw new Exception('StreamWriteError');
 				if ($wrote == 0)
-					throw new IMuException('StreamWriteError');
+					throw new Exception('StreamWriteError');
 				$this->_buffer = substr($this->_buffer, $wrote);
 				$this->_length -= $wrote;
 			}

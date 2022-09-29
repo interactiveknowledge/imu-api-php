@@ -103,7 +103,7 @@ class MIME
 		if (self::$_default !== null)
 			return;
 
-		self::$_default = new IMuMIMEType('application/x-unknown');
+		self::$_default = new MIMEType('application/x-unknown');
 		self::$_default->default = true;
 
 		self::$_extensions = array();
@@ -130,7 +130,7 @@ class MIME
 				continue;
 
 			$parts = explode(';', $line);
-			$mime = new IMuMIMEType($parts[0]);
+			$mime = new MIMEType($parts[0]);
 			if (count($parts) > 1)
 			{
 				$extensions = $parts[1];

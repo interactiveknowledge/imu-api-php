@@ -64,7 +64,7 @@ namespace IMu;
 ** @example Connect to a default server.
 **
 ** @code
-**   $session = new IMuSession();
+**   $session = new Session();
 **   $session->connect();
 */
 class Session
@@ -290,7 +290,7 @@ class Session
 		  	return $this->getTimeout();
 			break;
 		  default:
-		  	throw new IMuException('SessionProperty', $name);
+		  	throw new Exception('SessionProperty', $name);
 		}
 	}
 
@@ -318,7 +318,7 @@ class Session
 		  	return $this->setTimeout($value);
 			break;
 		  default:
-		  	throw new IMuException('SessionProperty', $name);
+		  	throw new Exception('SessionProperty', $name);
 		}
 	}
 
@@ -326,7 +326,7 @@ class Session
 	/*!
 	** Opens a connection to an IMu server.
 	**
-	** @throws IMuException
+	** @throws Exception
 	**   The connection could not be opened.
 	*/
 	public function
@@ -335,23 +335,23 @@ class Session
 		if ($this->_socket !== null)
 			return;
 
-		IMuTrace::write(2, 'connecting to %s:%d', $this->_host, $this->_port);
+		Trace::write(2, 'connecting to %s:%d', $this->_host, $this->_port);
 		$socket = @fsockopen($this->_host, $this->_port, $errno, $errstr);
 		if ($socket === false)
-			throw new IMuException('SessionConnect', $this->_host, $this->_port,
+			throw new Exception('SessionConnect', $this->_host, $this->_port,
 				$errstr);
-		IMuTrace::write(2, 'connected ok');
+		ce::write(2, 'connected ok');
 		if ($this->_timeout !== null)
 		{
-			IMuTrace::write(2, 'setting timeout to %s', $this->_timeout);
+			Trace::write(2, 'setting timeout to %s', $this->_timeout);
 			stream_set_timeout($socket, $this->_timeout);
 		}
 		$this->_socket = $socket;
-		$this->_stream = new IMuStream($this->_socket);
+		$this->_stream = new Stream($this->_socket);
 	}
 
 	/*!
-	** Closes the connection to the IMu server.
+	** Closes the connection to the  server.
 	*/
 	public function
 	disconnect()
@@ -359,7 +359,7 @@ class Session
 		if ($this->_socket === null)
 			return;
 
-		IMuTrace::write(2, 'closing connection');
+		Trace::write(2, 'closing connection');
 		@fclose($this->_socket);
 		$this->initialise();
 	}
@@ -382,7 +382,7 @@ class Session
 	**   process specifically for handling the newly logged in user's requests.
 	**   This value defaults to ``true``.
 	**
-	** @throws IMuException
+	** @throws Exception
 	**   The login request failed.
 	**
 	** @throws Exception
@@ -431,13 +431,13 @@ class Session
 		$request['checkStatus'] = true;
 		$response = $this->request($request);
 
-		IMuTrace::write(3, 'checkStatus: EMu server OK');
-		IMuTrace::write(2, 'EMu server response... %s', $response);
+		Trace::write(3, 'checkStatus: EMu server OK');
+		ce::write(2, 'EMu server response... %s', $response);
 		return $response;
 	}
 
 	/*!
-	** Submits a low-level request to the IMu server.
+	** Submits a low-level request to the rver.
 	**
 	** @param $request array
 	**   An associative array containing the request parameters.
@@ -445,7 +445,7 @@ class Session
 	** @returns array
 	**   An associative array containg the server's response.
 	**
-	** @throws IMuException
+	** @throws Exception
 	**   A server-side error occurred.
 	*/
 	public function
@@ -464,7 +464,7 @@ class Session
 		$response = $this->_stream->get();
 		$type = gettype($response);
 		if ($type != 'array')
-			throw new IMuException('SessionResponse', $type);
+			throw new Exception('SessionResponse', $type);
 
 		if (array_key_exists('context', $response))
 			$this->_context = $response['context'];
@@ -480,7 +480,7 @@ class Session
 		$status = $response['status'];
 		if ($status == 'error')
 		{
-			IMuTrace::write(2, 'server error %s', $response);
+			Trace::write(2, 'server error %s', $response);
 
 			$id = 'SessionServerError';
 			if (array_key_exists('error', $response))
@@ -488,7 +488,7 @@ class Session
 			else if (array_key_exists('id', $response))
 				$id = $response['id'];
 
-			$e = new IMuException($id);
+			$e = new Exception($id);
 
 			if (isset($response['args']))
 				$e->setArgs($response['args']);
@@ -496,7 +496,7 @@ class Session
 			if (isset($response['code']))
 				$e->setCode($response['code']);
 
-			IMuTrace::write(2, 'throwing exception %s', $e->__toString());
+			Trace::write(2, 'throwing exception %s', $e->__toString());
 
 			throw $e;
 		}

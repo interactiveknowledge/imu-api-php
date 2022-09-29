@@ -67,7 +67,7 @@ class Module extends Handler
 	** Creates an object which can be used to access an EMu module.
 	**
 	** If the ``$session`` parameter is ``null`` a new session is created
-	** automatically using the `IMuSession` class's **defaultHost** 
+	** automatically using the `Session` class's **defaultHost** 
 	** [$<link>(:session:defaultHost)] and **defaultPort** 
 	** [$<link>(:session:defaultPort)] values.
 	**
@@ -91,7 +91,7 @@ class Module extends Handler
 	/* Properties */
 	/*!
 	** @property table string
-	**   The name of the table associated with the `IMuModule` object 
+	**   The name of the table associated with the `Module` object 
 	**   [$<link>(:module:module)].
 	*/
 	public function
@@ -132,7 +132,7 @@ class Module extends Handler
 	** @returns int
 	**   The number of sets (including this one) registered in the server.
 	**
-	** @throws IMuException
+	** @throws Exception
 	**   A server-side error occurred.
 	*/
 	public function
@@ -158,7 +158,7 @@ class Module extends Handler
 	** @returns int
 	**   The number of sets (including these ones) registered in the server.
 	**
-	** @throws IMuException
+	** @throws Exception
 	**   A server-side error occurred.
 	*/
 	public function
@@ -189,7 +189,7 @@ class Module extends Handler
 	** @returns int
 	**   The number of aliases (including this one) registered in the server.
 	**
-	** @throws IMuException
+	** @throws Exception
 	**   A server-side error occurred.
 	*/
 	public function
@@ -215,7 +215,7 @@ class Module extends Handler
 	** @returns int
 	**   The number of sets (including these ones) registered in the server.
 	**
-	** @throws IMuException
+	** @throws Exception
 	**   A server-side error occurred.
 	*/ 
 	public function
@@ -243,7 +243,7 @@ class Module extends Handler
 	** @returns int
 	**   The number of sets (including this one) registered in the server.
 	**
-	** @throws IMuException
+	** @throws Exception
 	**   A server-side error occurred.
 	*/
 	public function
@@ -269,7 +269,7 @@ class Module extends Handler
 	** @returns int
 	**   The number sets (including these ones) registered in the server.
 	**
-	** @throws IMuException
+	** @throws Exception
 	*/
 	public function
 	addSortSets($sets)
@@ -310,10 +310,10 @@ class Module extends Handler
 	**   results will still include the pseudo-column ``rownum`` for each
 	**   fetched record.
 	**
-	** @returns IMuModuleFetchResult
-	**   An `IMuModuleFetchResult` object.
+	** @returns ModuleFetchResult
+	**   An `ModuleFetchResult` object.
 	**
-	** @throws IMuException
+	** @throws Exception
 	**   If a server-side error occured.
 	*/
 	public function
@@ -360,7 +360,7 @@ class Module extends Handler
 	**   The number of records found. 
 	**   This will be either ``1`` if the record was found or ``0`` if not found.
 	**
-	** @throws IMuException
+	** @throws Exception
 	**   If a server-side error occured.
 	*/
 	public function
@@ -378,7 +378,7 @@ class Module extends Handler
 	** @returns int
 	**   The number of records found.
 	**
-	** @throws IMuException
+	** @throws Exception
 	**   If a server-side error occured.
 	*/
 	public function
@@ -399,13 +399,13 @@ class Module extends Handler
 	** @returns int
 	**   An estimate of the number of records found.
 	**
-	** @throws IMuException
+	** @throws Exception
 	**   If a server-side error occurred.
 	*/
 	public function
 	findTerms($terms, $options = null)
 	{
-		$class = 'IMuTerms';
+		$class = 'Terms';
 		if ($terms instanceof $class)
 		{
 			$terms = $terms->toArray();
@@ -426,7 +426,7 @@ class Module extends Handler
 	** @returns int
 	**   An estimate of the number of records found.
 	**
-	** @throws IMuException
+	** @throws Exception
 	**   If a server-side error occurred.
 	*/
 	public function
@@ -466,7 +466,7 @@ class Module extends Handler
 	** @returns int
 	**   The number of records found.
 	**
-	** @throws IMuException
+	** @throws ion
 	**   If a server-side error occured.
 	*/
 	public function
@@ -491,7 +491,7 @@ class Module extends Handler
 	** @returns int
 	**   The number of records found.
 	**
-	** @throws IMuException
+	** @throws Exception
 	**   If a server-side error occured.
 	*/
 	public function
@@ -522,7 +522,7 @@ class Module extends Handler
 	**   An array containing the report information if the report flag has been
 	**   specified. Otherwise the result will be ``null``.
 	**
-	** @throws IMuException
+	** @throws Exception
 	**   If a server-side error occurred.
 	*/
 	public function
@@ -570,7 +570,7 @@ class Module extends Handler
 	protected function
 	makeResult($data)
 	{
-		$result = new IMuModuleFetchResult;
+		$result = new ModuleFetchResult;
 		$result->hits = $data['hits'];
 		$result->rows = $data['rows'];
 		$result->count = count($result->rows);
@@ -579,7 +579,7 @@ class Module extends Handler
 }
 
 /*!
-** Provides results from a call to the `IMuModule` **fetch( )**
+** Provides results from a call to the `Module` **fetch( )**
 ** [$<link>(:module:fetch)] method.
 ** 
 ** @usage

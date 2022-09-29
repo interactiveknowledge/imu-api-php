@@ -238,18 +238,18 @@ class Modules extends Handler
 	{
 		$flag = $array['flag'];
 		$offset = $array['offset'] + 0;
-		return new IMuModulesFetchPosition($flag, $offset);
+		return new ModulesFetchPosition($flag, $offset);
 	}
 
 	protected function
 	makeResult($data)
 	{
-		$result = new IMuModulesFetchResult;
+		$result = new ModulesFetchResult;
 		$result->count = $data['count'] + 0;
 		$result->modules = array();
 		foreach ($data['modules'] as $item)
 		{
-			$module = new IMuModulesFetchModule;
+			$module = new ModulesFetchModule;
 			$module->hits = $item['hits'] + 0;
 			$module->index = $item['index'] + 0;
 			$module->name = $item['name'];

@@ -65,7 +65,7 @@ class HTMLDocument extends Document
 		}
 		parent::__construct('html', $public, $url);
 
-		$this->elementClass('IMuHTMLElement');
+		$this->elementClass('HTMLElement');
 	}
 
 	public function
@@ -99,7 +99,7 @@ EOF;
 		$dom = new DOMDocument();
 		if (! $dom->loadHTML($html))
 		{
-			IMuTrace(3, 'newDocumentFragment: loadHTML failed');
+			Trace(3, 'newDocumentFragment: loadHTML failed');
 			return;
 		}
 		$list = $dom->getElementsByTagName('body');

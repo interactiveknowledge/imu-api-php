@@ -239,7 +239,7 @@ class WebService
 	protected function
 	connect()
 	{
-		$this->session = new IMuSession;
+		$this->session = new Session;
 		$this->session->host = $this->config['host'];
 		$this->session->port = $this->config['port'];
 		$this->session->connect();
@@ -293,12 +293,12 @@ class WebService
  * @param string $id
  *   A string that identifies the exception.
  *
- * @throws IMuException
+ * @throws Exception
  */
 function
 raise($code, $id)
 {
-	$exception = new IMuException($id);
+	$exception = new Exception($id);
 
 	$args = func_get_args();
 	array_shift($args);
@@ -307,7 +307,7 @@ raise($code, $id)
 
 	$exception->setCode($code);
 
-	IMuTrace::write(2, 'raising exception %s', $exception);
+	Trace::write(2, 'raising exception %s', $exception);
 	throw $exception;
 }
 ?>

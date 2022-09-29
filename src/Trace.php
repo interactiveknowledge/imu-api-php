@@ -257,6 +257,6 @@ class Trace
 		return self::$_handle == STDOUT;
 	}
 }
-IMuTrace::init();
+Trace::init();
 
 ?>

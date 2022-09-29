@@ -88,7 +88,7 @@ class RSS
 	public function
 	addItem()
 	{
-		$item = new IMuRSSItem;
+		$item = new RSSItem;
 		$this->items[] = $item;
 		return $item;
 	}
@@ -96,7 +96,7 @@ class RSS
 	public function
 	createXML()
 	{
-		$xml = new IMuXMLDocument();
+		$xml = new XMLDocument();
 
 		$elem = $xml->element('rss');
 		$elem->attr('version', '2.0');
