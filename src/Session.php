@@ -339,9 +339,8 @@ class Session
 		Trace::write(2, 'connecting to %s:%d', $this->_host, $this->_port);
 		$socket = @fsockopen($this->_host, $this->_port, $errno, $errstr);
 		if ($socket === false)
-			throw new IMuException('SessionConnect', $this->_host, $this->_port,
-				$errstr);
-		ce::write(2, 'connected ok');
+			throw new IMuException('SessionConnect', $this->_host, $this->_port, $errstr);
+			Trace::write(2, 'connected ok');
 		if ($this->_timeout !== null)
 		{
 			Trace::write(2, 'setting timeout to %s', $this->_timeout);
