@@ -152,7 +152,7 @@ class Stream
 					// Extension - allow simple identifiers
 					$name = $this->_string;
 				else
-					throw new ('StreamSyntaxName', $this->_token);
+					throw new IMuException('StreamSyntaxName', $this->_token);
 
 				$this->getToken();
 				if ($this->_token != ':')
