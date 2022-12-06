@@ -1,6 +1,7 @@
 # IMu API for PHP #
 
 At its core, IMu provides a set of Application Programming Interfaces (APIs). 
+This is a fork of the original because Drupal needs to use composer and create an autoload and namespace for the OOP classes.
 
 # Contents
 
