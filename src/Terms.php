@@ -60,6 +60,8 @@
 **
 ** @since 1.0
 */
+namespace IMu;
+
 class Terms
 {
 	/* Constructor */
