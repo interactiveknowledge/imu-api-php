@@ -2,6 +2,40 @@
 
 At its core, IMu provides a set of Application Programming Interfaces (APIs). 
 This is a fork of the original because Drupal needs to use composer and create an autoload and namespace for the OOP classes.
+# To use with composer
+
+In your `composer.json` file under the `autoload` key add:
+
+```[json]
+"psr-4": {
+    "IMu\\": "vendor/interactiveknowledge/imu-api-php/src"
+}
+```
+
+In your `composer.json` file under the `repositories` key add:
+
+```[json]
+"imu-api-php": {
+    "type": "vcs",
+    "url": "https://github.com/interactiveknowledge/imu-api-php"
+}
+```
+
+Run the composer require command in your project:
+
+```[bash]
+composer require 'interactiveknowledge/imu-api-php:dev-master'
+```
+
+Then to use inside your project:
+
+```[php]
+
+use IMu\IMu;
+
+```
+
+
 
 # Contents
 
@@ -43,34 +77,20 @@ This is a fork of the original because Drupal needs to use composer and create a
 
 The IMu API source code bundle for version 2.0 (or higher) is required to develop an IMu-based application. This bundle contains all the classes that make up the IMu PHP API. IMu API bundles are available from the IMu [releases](https://github.com/axiell/imu-api-php/releases) page.
 
-In order to use the IMu PHP API, include `IMu.php` in the PHP code. For example, if the IMu API source code is installed in the directory `/usr/local/lib/imu` the following line would be added to the PHP code:
+The `IMu` file defines the `IMu` class. This class includes static members which contain information about the IMu installation. The class includes:
 
-```
-require_once '/usr/local/lib/imu/IMu.php';
-```
-
-The `IMu.php` file defines the `IMu` class. This class includes static members which contain information about the IMu installation. The class includes:
-
-```
+```[php]
 IMu::$lib - the path to the IMu PHP API files.
 IMu::VERSION - the version of this IMu release.
-```
-
-The `$lib` member should also be used to simplify the requiring of other IMu library files, for example:
-
-```
-<?php
-require_once IMu::$lib . '/Session.php';
-?>
 ```
 
 <h2 id="1-1-test-program">Test Program</h1>
 
 Building this very simple IMu-based web page is a good test of whether the development environment has been set up properly for using IMu:
 
-```
+```[php]
 <?php
-require_once '/usr/local/lib/imu/IMu.php';
+use IMu\IMu;
 
 printf('IMu version %s', IMu::VERSION);
 exit(0);
@@ -83,18 +103,17 @@ Many of the methods in the IMu library objects throw an exception when an error 
 
 The following code is a basic template for writing PHP programs that use the IMu library:
 
-```
+```[php]
 <?php
-require_once '/usr/local/lib/imu/IMu.php';
-// ⋯
-try
-{
+
+use IMu\IMu;
+use IMu\IMuException;
+
+try {
     /* Create and use IMu objects
      * ⋯
      */
-}
-catch (Exception $e)
-{
+} catch (IMuException $e) {
     /* Handle or report error
      * ⋯
      */
@@ -112,23 +131,25 @@ Most IMu exceptions throw an `IMuException` object. The `IMuException` class is 
 
 Most IMu based programs begin by creating a connection to an IMu server. Connections to a server are created and managed using IMu’s `IMuSession` class. Before connecting, both the name of the host and the port number to connect on must be specified. This can be done in one of three ways.
 
-1. 
-    The simplest way to create a connection to an IMu server is to pass the host name and port number to the `IMuSession` constructor and then call the `connect` method. For example:
+1. The simplest way to create a connection to an IMu server is to pass the host name and port number to the `IMuSession` constructor and then call the `connect` method. For example:
 
-    ```
-    require_once '/usr/local/lib/imu/IMu.php';
-    require_once IMu::$lib . '/Session.php';
+    ```[php]
+    use IMu\IMu;
+    use IMu\IMuException;
+    use IMu\Session as IMuSession;
+
     // ⋯
     $session = new IMuSession('server.com', 12345);
     $session->connect();
     ```
 
-1. 
-    Alternatively, pass no values to the constructor and then set the `host` and `port` properties (using the `setHost` and `setPort` methods) before calling `connect`:
+1. Alternatively, pass no values to the constructor and then set the `host` and `port` properties (using the `setHost` and `setPort` methods) before calling `connect`:
 
-    ```
-    require_once '/usr/local/lib/imu/IMu.php';
-    require_once IMu::$lib . '/Session.php';
+    ```[php]
+    use IMu\IMu;
+    use IMu\IMuException;
+    use IMu\Session as IMuSession;
+
     // ⋯
     $session = new IMuSession();
     $session->setHost("server.com");
@@ -136,12 +157,13 @@ Most IMu based programs begin by creating a connection to an IMu server. Connect
     $session->connect();
     ```
 
-1. 
-    If either the host or port is not set, the `IMuSession` class default value will be used. These defaults can be overridden by setting the (static) class properties `defaultHost` and `defaultPort`:
+1. If either the host or port is not set, the `IMuSession` class default value will be used. These defaults can be overridden by setting the (static) class properties `defaultHost` and `defaultPort`:
 
-    ```
-    require_once '/usr/local/lib/imu/IMu.php';
-    require_once IMu::$lib . '/Session.php';
+    ```[php]
+    use IMu\IMu;
+    use IMu\IMuException;
+    use IMu\Session as IMuSession;
+
     // ⋯
     IMuSession::setDefaultHost('server.com');
     IMuSession::setDefaultPort(12345);
@@ -175,8 +197,9 @@ The IMu API provides facilities to search, sort and retrieve information from re
 
 A program accesses an EMu module (or table, the terms are used interchangeably) using the `IMuModule` class. The name of the table to be accessed is passed to the `IMuModule` constructor. For example:
 
-```
-require_once IMu::$lib . '/Module.php';
+```[php]
+use IMu\Module as IMuModule;
+
 // ⋯
 $parties = new IMuModule('eparties', $session);
 ```
@@ -198,8 +221,9 @@ The `findKey` method searches for a single record by its key.
 
 For example, the following code searches for a record with a key of 42 in the Parties module:
 
-```
-require_once IMu::$lib . '/Module.php';
+```[php]
+use IMu\Module as IMuModule;
+
 // ⋯
 $parties = new IMuModule('eparties', $session);
 $hits = $parties->findKey(42);
@@ -223,8 +247,8 @@ The `findTerms` method is the most flexible and powerful way to search for recor
 
 The terms are specified using a `IMuTerms` object. Once a `IMuTerms` object has been created, add specific terms to it (using the `add` method) and then pass the `IMuTerms` object to the `findTerms` method. For example, to specify a Parties search for records which contain a first name of “John” and a last name of “Smith”:
 
-```
-require_once IMu::$lib . '/Terms.php';
+```[php]
+use IMu\Terms as IMuTerms;
 
 $search = new IMuTerms();
 $search->add('NamFirst', 'John');
@@ -235,14 +259,10 @@ $hits = $parties->findTerms($search);
 
 There are several points to note:
 
-1. 
-    The first argument passed to the `add` method element contains the name of the column or an alias in the module to be searched.
-1. 
-    An alias associates a supplied value with one or more actual columns. Aliases are created using the `addSearchAlias` or `addSearchAliases` methods.
-1. 
-    The second argument contains the value to search for.
-1. 
-    Optionally, a comparison operator can be supplied as a third argument (see below examples). The operator specifies how the value supplied as the second argument should be matched.
+1. The first argument passed to the `add` method element contains the name of the column or an alias in the module to be searched.
+1. An alias associates a supplied value with one or more actual columns. Aliases are created using the `addSearchAlias` or `addSearchAliases` methods.
+1. The second argument contains the value to search for.
+1. Optionally, a comparison operator can be supplied as a third argument (see below examples). The operator specifies how the value supplied as the second argument should be matched.
 
     Operators are the same as those used in TexQL (see KE’s [TexQL documentation](https://emu.kesoftware.com/downloads/Texpress/texql.pdf) for details). If not supplied, the operator defaults to “matches”.
 
@@ -254,43 +274,38 @@ There are several points to note:
 
 **Examples**
 
-1. 
-    To search for the name “Smith” in the last name field of the Parties module, the following term can be used:
+1. To search for the name “Smith” in the last name field of the Parties module, the following term can be used:
 
-    ```
+    ```[php]
     $search = new IMuTerms();
     $search->add('NamLast', 'Smith');
     ```
 
-1. 
-    Specifying search terms for other types of columns is straightforward. For example, to search for records inserted on April 4, 2011:
+1. Specifying search terms for other types of columns is straightforward. For example, to search for records inserted on April 4, 2011:
 
-    ```
+    ```[php]
     $search = new IMuTerms();
     $search->add('AdmDateInserted', 'Apr 4 2011');
     ```
 
-1. 
-    To search for records inserted before April 4, 2011, it is necessary to add an operator:
+1. To search for records inserted before April 4, 2011, it is necessary to add an operator:
 
-    ```
+    ```[php]
     $search = new IMuTerms();
     $search->add('AdmDateInserted', 'Apr 4 2011', '<');
     ```
 
-1. 
-    By default, the relationship between the terms is a Boolean `AND`. This means that to find records which match both a first name containing “John” and a last name containing “Smith” the `IMuTerms` object can be created as follows:
+1. By default, the relationship between the terms is a Boolean `AND`. This means that to find records which match both a first name containing “John” and a last name containing “Smith” the `IMuTerms` object can be created as follows:
 
-    ```
+    ```[php]
     $search = new IMuTerms();
     $search->add('NamFirst', 'John');
     $search->add('NamLast', 'Smith');
     ```
 
-1. 
-    IMuTerms object where the relationship between the terms is a Boolean `OR` can be created by passing the string value “OR” to the `IMuTerms` constructor:
+1. IMuTerms object where the relationship between the terms is a Boolean `OR` can be created by passing the string value “OR” to the `IMuTerms` constructor:
 
-    ```
+    ```[php]
     $search = new IMuTerms('OR');
     $search->add('NamFirst', 'John');
     $search->add('NamLast', 'Smith');
@@ -298,10 +313,9 @@ There are several points to note:
 
     This specifies a search for records where either the first name contains “John” or the last name contains “Smith”.
 
-1. 
-    Combinations of `AND` and `OR` search terms can be created. The `addAnd` method adds a new set of `AND` terms to the original `IMuTerms` object. Similarly the `addOr` method adds a new set of `OR` terms. For example, to restrict the search for a first name of “John” and a last name of “Smith” to matching records inserted before April 4, 2011 or on May 1, 2011, specify:
+1. Combinations of `AND` and `OR` search terms can be created. The `addAnd` method adds a new set of `AND` terms to the original `IMuTerms` object. Similarly the `addOr` method adds a new set of `OR` terms. For example, to restrict the search for a first name of “John” and a last name of “Smith” to matching records inserted before April 4, 2011 or on May 1, 2011, specify:
 
-    ```
+    ```[php]
     $search = new IMuTerms();
     $search->add('NamFirst', 'John');
     $search->add('NamLast', 'Smith');
@@ -310,11 +324,10 @@ There are several points to note:
     $dates->add('AdmDateInserted', 'May 1 2011');
     ```
 
-1. 
-    To run a search, pass the `IMuTerms` object to the `findTerms` method:
+1. To run a search, pass the `IMuTerms` object to the `findTerms` method:
 
-    ```
-    $parties = new Module('eparties', $session);
+    ```[php]
+    $parties = new IMuModule('eparties', $session);
     $search = new IMuTerms();
     $search->add('NamLast', 'Smith');
     $hits = $parties->findTerms($search);
@@ -322,10 +335,9 @@ There are several points to note:
 
     As with other find methods, the return value contains the estimated number of matches.
 
-1. 
-    To use a search alias, call the `addSearchAlias` method to associate the alias with one or more real column names before calling `findTerms`. Suppose we want to allow a user to search the Catalogue module for keywords. Our definition of a keywords search is to search the *SummaryData*, *CatSubjects_tab* and *NotNotes* columns. We could do this by building an `OR` search:
+1. To use a search alias, call the `addSearchAlias` method to associate the alias with one or more real column names before calling `findTerms`. Suppose we want to allow a user to search the Catalogue module for keywords. Our definition of a keywords search is to search the *SummaryData*, *CatSubjects_tab* and *NotNotes* columns. We could do this by building an `OR` search:
 
-    ```
+    ```[php]
     $keyword = '⋯';
     // ⋯
     $search = new IMuTerms('OR');
@@ -336,10 +348,10 @@ There are several points to note:
 
     Another way of doing this is to register the association between the name *keywords* and the three columns we are interested in and then pass the name *keywords* as the column to be searched:
 
-    ```
+    ```[php]
     $keyword = '⋯';
     // ⋯
-    $catalogue = new IMu::Module('ecatalogue', $session);
+    $catalogue = new IMuModule('ecatalogue', $session);
     $columns = array
     (
         'SummaryData',
@@ -355,10 +367,10 @@ There are several points to note:
 
     An alternative to passing the columns as an array of strings is to pass a single string, with the column names separated by semi-colons:
 
-    ```
+    ```[php]
     $keyword = '⋯';
     // ⋯
-    $catalogue = new Module('ecatalogue', $session);
+    $catalogue = new IMuModule('ecatalogue', $session);
     $columns = 'SummaryData;CatSubjects_tab;NotNotes';
     $catalogue->addSearchAlias('keywords', $columns);
     // ⋯
@@ -369,10 +381,9 @@ There are several points to note:
 
     The advantage of using a search alias is that once the alias is registered a simple name can be used to specify a more complex `OR` search.
 
-1. 
-    To add more than one alias at a time, build an associative array of names and columns and call the `addSearchAliases` method:
+1. To add more than one alias at a time, build an associative array of names and columns and call the `addSearchAliases` method:
 
-    ```
+    ```[php]
     $aliases = array
     (
         'keywords' => 'SummaryData;CatSubjects_tab;NotNotes',
@@ -381,24 +392,33 @@ There are several points to note:
     $module->addSearchAliases($aliases);
     ```
 
+1. To return all records with columns you can:
+
+    ```[php]
+    $columns = 'SummaryData;CatSubjects_tab;NotNotes';
+    $catalogue = new IMuModule('ecatalogue', $session);
+    $search = new IMuTerms();
+    $catalogue->findTerms($search);
+    ```
+
+
 <h3 id="3-1-4-the-findwhere-method">The findWhere Method</h3>
 
 With the `findWhere` method it is possible to submit a complete TexQL *where* clause:
 
-```
-$parties = new Module('eparties', $session);
+```[php]
+$parties = new IMuModule('eparties', $session);
 $where = "NamLast contains 'Smith'";
 $hits = $parties->findWhere($where);
 ```
 
 Although this method provides complete control over exactly how a search is run, it is generally better to use `findTerms` to submit a search rather than building a where clause. There are (at least) two reasons to prefer `findTerms` over `findWhere`:
 
-1. 
-    Building the *where* clause requires the code to have detailed knowledge of the data type and structure of each column. The `findTerms` method leaves this task to the server.
+1. Building the *where* clause requires the code to have detailed knowledge of the data type and structure of each column. The `findTerms` method leaves this task to the server.
 
     For example, specifying the term to search for a particular value in a nested table is straightforward. To find Parties records where the Roles nested table contains Artist, `findTerms` simply requires:
     
-    ```
+    ```[php]
     $search->add('NamRoles_tab', 'Artist');
     ```
 
@@ -410,8 +430,7 @@ Although this method provides complete control over exactly how a search is run,
 
     The TexQL for double nested tables is even more complex.
 
-1. 
-    More importantly, findTerms is more secure.
+1. More importantly, findTerms is more secure.
 
     With `findTerms` a set of terms is submitted to the server which then builds the TexQL *where* clause. This makes it much easier for the server to check for terms which may contain SQL-injection style attacks and to avoid them.
     
@@ -553,11 +572,10 @@ This ``sort`` method takes two arguments:
 
 For example:
 
-1. 
-    Sort parties by first name (ascending):
+1. Sort parties by first name (ascending):
 
-    ```
-    $parties = new Module('eparties', $session);
+    ```[php]
+    $parties = new IMuModule('eparties', $session);
     $search = new IMuTerms();
     $search->add('NamLast', 'Smith');
     $hits = $parties->findTerms($search);
@@ -565,10 +583,9 @@ For example:
     $parties->sort('NamFirst');
     ```
 
-1. 
-    Sort parties by title (ascending) and then first name (descending):
+1. Sort parties by title (ascending) and then first name (descending):
 
-    ```
+    ```[php]
     $sort = array
     (
         'NamTitle',
@@ -577,10 +594,9 @@ For example:
     $parties->sort($sort);
     ```
 
-1. 
-    Run a case-sensitive sort of parties by title (ascending) and then first name (descending):
+1. Run a case-sensitive sort of parties by title (ascending) and then first name (descending):
 
-    ```
+    ```[php]
     $sort = array
     (
         'NamTitle',
@@ -619,8 +635,8 @@ This is illustrated in the following example.
 
 This example shows a three-level sort by title, last name (descending) and first name on a set of Parties records:
 
-```
-$parties = new Module('eparties', $session);
+```[php]
+$parties = new IMuModule('eparties', $session);
 
 $terms = new IMuTerms('or');
 $terms->add('NamLast', 'Smith');
@@ -733,19 +749,18 @@ The `fetch` method has four arguments:
 
 For example:
 
-1. 
-    Retrieve the first record from the start of a set of matching records:
+1. Retrieve the first record from the start of a set of matching records:
 
-    ```
-    $parties = new Module('eparties', $session);
+    ```[php]
+    $parties = new IMuModule('eparties', $session);
     $columns = 'NamFirst,NamLast';
     $result = $parties->fetch('start', 0, 1, $columns);
     ```
 
     The *columns* argument can also be specified as an array reference:
 
-    ```
-    $parties = new Module('eparties', $session);
+    ```[php]
+    $parties = new IMuModule('eparties', $session);
     $columns = array
     (
         'NamFirst',
@@ -754,11 +769,10 @@ For example:
     $result = $parties->fetch('start', 0, 1, $columns);
     ```
 
-1. 
-    Return all of the results in a matching set:
+1. Return all of the results in a matching set:
 
-    ```
-    $parties = new Module('eparties', $session);
+    ```[php]
+    $parties = new IMuModule('eparties', $session);
     $columns = array
     (
         'NamFirst',
@@ -767,18 +781,16 @@ For example:
     $result = $parties->fetch('start', 0, -1, $columns);
     ```
 
-1. 
-    Change the current record to the next record in the set of matching records without retrieving any data:
+1. Change the current record to the next record in the set of matching records without retrieving any data:
 
-    ```
+    ```[php]
     $parties->fetch('current', 1, 0);
     ```
 
-1. 
-    Retrieve the last record from the end of a set of matching records:
+1. Retrieve the last record from the end of a set of matching records:
 
-    ```
-    $parties = new Module('eparties', $session);
+    ```[php]
+    $parties = new IMuModule('eparties', $session);
     $columns = array
     (
         'NamFirst',
@@ -806,7 +818,7 @@ The `fetch` method returns records requested in an [IMuModuleFetchResult](TODO-l
 
 For example, retrieve the *count* & *hits* properties and iterate over all of the returned records using the *rows* property:
 
-```
+```[php]
 $columns = array
 (
     'NamFirst',
@@ -836,7 +848,7 @@ Count: 2
 Hits: 4
 Rows:
   1. ECCLES-SMITH, Kate (100573)
-  2. SMITH, Ian (100301)
+  1. SMITH, Ian (100301)
 ```
 
 <h3 id="3-3-2-specifying-columns">Specifying Columns</h3>
@@ -853,7 +865,7 @@ NamFirst
 
 The values of atomic columns are returned as strings:
 
-```
+```[php]
 $columns = array
 (
     'NamFirst'
@@ -876,7 +888,7 @@ NamRoles_tab
 
 The values of nested tables are returned as an array. Each array member is a string that corresponds to a row from the nested table:
 
-```
+```[php]
 $columns = array
 (
     'NamRoles_tab'
@@ -908,7 +920,7 @@ SynSynonymyRef_tab.(NamFirst,NamLast)
 
 The return values of columns from attached records depends on the type of the attachment column. If the attachment column is atomic then the column values are returned as an associative array. If the attachment column is a nested table the values are returned as an array. Each array member is an associative array containing the requested column values for each attached record:
 
-```
+```[php]
 $columns = array
 (
     'SynSynonymyRef_tab.(NamFirst,NamLast)'
@@ -932,15 +944,13 @@ A reverse attachment allows you to specify columns from other records in the sam
 
 For example:
 
-1. 
-    Retrieve the *TitMainTitle* (Main Title) column for all Catalogue records that have the current Parties record attached to their *CreCreatorRef_tab* (Creator) column:
+1. Retrieve the *TitMainTitle* (Main Title) column for all Catalogue records that have the current Parties record attached to their *CreCreatorRef_tab* (Creator) column:
 
     ```
     <ecatalogue:CreCreatorRef_tab>.TitMainTitle
     ```
 
-1. 
-    Retrieve the *NarTitle* (Title) column for all Narratives records that have the current Narrative record attached to their *HieChildNarrativesRef_tab* (Child Narratives) column:
+1. Retrieve the *NarTitle* (Title) column for all Narratives records that have the current Narrative record attached to their *HieChildNarrativesRef_tab* (Child Narratives) column:
 
     ```
     <enarratives:HieChildNarrativesRef_tab>.NarTitle
@@ -954,7 +964,7 @@ Multiple columns can be specified from the reverse attachment record:
 
 Reverse attachments are returned as an array. Each array member is an associative array containing the requested column values from each record from the specified module (The Catalogue module in the example below) that has the current record attached to the specified column (The *CreCreatorRef_tab* column in the example below):
 
-```
+```[php]
 $columns = array
 (
     '<ecatalogue:CreCreatorRef_tab>.(TitMainTitle,TitObjectCategory)'
@@ -990,7 +1000,7 @@ contributors=[NarContributorRef_tab.SummaryData,NarContributorRole_tab]
 
 The grouped nested tables are returned as an array. Each array member is an associative array containing corresponding rows from the nested tables:
 
-```
+```[php]
 $columns = array
 (
     '[NarContributorRef_tab.SummaryData,NarContributorRole_tab]'
@@ -1024,7 +1034,7 @@ Virtual columns are columns that do not actually exist in the EMu table being ac
 
     Returns the modification date and time of the record using the format `YYYY-MM-DDThh:mm:ss`.
 
-    ```
+    ```[php]
     $columns = array
     (
         'insertedTimeStamp',
@@ -1131,11 +1141,9 @@ A fetch set allows you to pre-register a group of columns by a single name. That
 
 Fetch sets are useful if the `fetch` method will be called several times with the same set of columns because:
 
-* 
-    The required columns do no have to be specified every time the `fetch` method is called. This is useful when [maintaining state](#4-maintaining-state).
+* The required columns do no have to be specified every time the `fetch` method is called. This is useful when [maintaining state](#4-maintaining-state).
 
-* 
-    Every time the `fetch` method is called the IMu server must parse the supplied columns and check them against the EMu schema. For complex column sets, particularly those involving several references or reverse references, this can take time.
+* Every time the `fetch` method is called the IMu server must parse the supplied columns and check them against the EMu schema. For complex column sets, particularly those involving several references or reverse references, this can take time.
 
 The `IMuModule` class `addFetchSet` method is used to register a set of columns. This method takes two arguments:
 
@@ -1153,10 +1161,9 @@ The results are returned as if you had supplied the columns directly to the `fet
 
 For example:
 
-1. 
-    Add a single fetch set using the addFetchSet method:
+1. Add a single fetch set using the addFetchSet method:
 
-    ```
+    ```[php]
     $columns = array
     (
         'NamFirst',
@@ -1166,10 +1173,9 @@ For example:
     $parties->addFetchSet('person_details', $columns);
     ```
 
-1. 
-    Add multiple fetch sets using the `addFetchSets` method:
+1. Add multiple fetch sets using the `addFetchSets` method:
 
-    ```
+    ```[php]
     $sets = array
     (
         'person_details' => array('NamFirst', 'NamLast', 'NamRoles_tab'),
@@ -1179,10 +1185,9 @@ For example:
     $module->addFetchSets($sets);
     ```
 
-1. 
-    Retrieve a fetch set using the `fetch` method:
+1. Retrieve a fetch set using the `fetch` method:
 
-    ```
+    ```[php]
     $result = $parties->fetch('start', 0, 1, 'person_details');
     foreach ($result->rows as $row)
     {
@@ -1205,13 +1210,13 @@ For example:
 
 Columns can be renamed in the returned results by prefixing them with an alternative name:
 
-```
+```[php]
 first_name=NamFirst
 ```
 
 The value of the specified column is now returned using the alternative name:
 
-```
+```[php]
 $columns = array
 (
     'first_name=NamFirst'
@@ -1250,7 +1255,7 @@ contributors=[contributor=NarContributorRef_tab.SummaryData,role=NarContributorR
 
 Alternative names can also be supplied in fetch sets:
 
-```
+```[php]
 $columns = array
 (
     'first_name=NamFirst',
@@ -1266,7 +1271,7 @@ In this example we build a simple PHP based web page to search the Parties modul
 
 First build the search page, which is a plain HTML form:
 
-```
+```[html]
 <head>
   <title>Party Search</title>
 </head>
@@ -1281,12 +1286,13 @@ First build the search page, which is a plain HTML form:
 
 Next build the results page, which runs the search and displays the results:
 
-```
+```[php]
 <?php
-require_once dirname(__FILE__) . '/../../lib/IMu.php';
-require_once IMu::$lib . '/Module.php';
-require_once IMu::$lib . '/Session.php';
-require_once IMu::$lib . '/Terms.php';
+use IMu\IMu;
+use IMu\IMuException;
+use IMu\Module as IMuModule;
+use IMu\Session as IMuSession;
+use IMu\Terms as IMuTerms;
 
 if (! isset($_GET['name']) || $_GET['name'] == '')
 {
@@ -1299,8 +1305,8 @@ $name = $_GET['name'];
 $terms = new IMuTerms();
 $terms->add('NamLast', $name);
 
-$session = new Session('imu.mel.kesoftware.com', 40136);
-$module = new Module('eparties', $session);
+$session = new IMuSession('imu.mel.kesoftware.com', 40136);
+$module = new IMuModule('eparties', $session);
 $hits = $module->findTerms($terms);
 
 $columns = array
@@ -1341,12 +1347,11 @@ In this example the *name* parameter entered via the HTML search page is submitt
 
 The IMu API provides a number of special mechanisms to handle access to the multimedia stored in the EMu <abbr title="Database management system">DBMS</abbr>. These machanisms fall into three rough categories:
 
-1. 
-    Mechanisms to select Multimedia module records that are attached to another module. This is covered in the [Multimedia Attachments](#3-4-1-multimedia-attachments) section.
-1. 
-    Mechanisms to select multimedia files from a Multimedia module record. This is covered in the [Multimedia Files](#3-4-2-multimedia-files) and [Filters](#3-4-3-filters) sections.
-1. 
-    Mechanisms to apply modifications to multimedia files. This is covered in the [Modifiers](#3-4-4-modifiers) section.
+1. Mechanisms to select Multimedia module records that are attached to another module. This is covered in the [Multimedia Attachments](#3-4-1-multimedia-attachments) section.
+
+1. Mechanisms to select multimedia files from a Multimedia module record. This is covered in the [Multimedia Files](#3-4-2-multimedia-files) and [Filters](#3-4-3-filters) sections.
+
+1. Mechanisms to apply modifications to multimedia files. This is covered in the [Modifiers](#3-4-4-modifiers) section.
 
 It is important to note that a single record in the EMu DBMS can have multiple Multimedia module records associated with it. Each Multimedia module record can have multiple multimedia files associated with it. The seperate mechanisms for handling multimedia access can be composed so that it is possible to, for example:
 
@@ -1375,36 +1380,31 @@ The following virtual columns return information about a set of multimedia attac
 
 All of these virtual columns return the [irn](GLOSSARY.md#irn), [type](GLOSSARY.md#mime-type) and [format](GLOSSARY.md#mime-format) of the Multimedia record attached to the current record. They also act as reference columns to the Multimedia module. This means that other columns from the Multimedia module (including [virtual columns](#3-3-2-6-virtual-columns)) can also be requested from the corresponding Multimedia record, for example:
 
-1. 
-    Include the title for all attached multimedia:
+1. Include the title for all attached multimedia:
 
     ```
     multimedia.MulTitle
     ```
 
-1. 
-    Include the title for all attached images:
+1. Include the title for all attached images:
 
     ```
     images.MulTitle
     ```
 
-1. 
-    Include details about the master multimedia file for all attached images (using the virtual Multimedia module column master):
+1. Include details about the master multimedia file for all attached images (using the virtual Multimedia module column master):
 
     ```
     images.master
     ```
 
-1. 
-    Include multiple columns for all attached images:
+1. Include multiple columns for all attached images:
 
     ```
     images.(master,MulTitle,MulDescription)
     ```
 
-1. 
-    Include and rename multiple columns for all attached images:
+1. Include and rename multiple columns for all attached images:
 
     ```
     images.(master,title=MulTitle,description=MulDescription)
@@ -1414,7 +1414,7 @@ All of these virtual columns return the [irn](GLOSSARY.md#irn), [type](GLOSSARY.
 
 This example shows the retrieval of the base information and the title for all multimedia images attached to a parties record:
 
-```
+```[php]
 $columns = array
 (
     'images.MulTitle'
@@ -1611,7 +1611,7 @@ The *resource* and *resources* virtual columns both return the same type of info
 
 This example shows the retrieval of the multimedia title and resource information about all multimedia files for all multimedia images attached to a parties record:
 
-```
+```[php]
 $columns = array
 (
     'images.(MulTitle,resources)',
@@ -1810,29 +1810,25 @@ column(name operator value, name operator value);
 
 For example:
 
-1. 
-    Select multimedia resolutions with a width greater that 300 pixels:
+1. Select multimedia resolutions with a width greater that 300 pixels:
 
 ```
 resolutions(width > 300)
 ```
 
-1. 
-    Select the single multimedia resource with a width closest to 600:
+1. Select the single multimedia resource with a width closest to 600:
 
 ```
 resources(width @ 600)
 ```
 
-1. 
-    Select the thumbnail resource:
+1. Select the thumbnail resource:
 
 ```
 resources(kind == thumbnail)
 ```
 
-1. 
-    Specify multiple filters to select the single multimedia resource with a width and height closest to 600:
+1. Specify multiple filters to select the single multimedia resource with a width and height closest to 600:
 
 ```
 resources(width @ 600, height @ 600)
@@ -1977,43 +1973,37 @@ The supported values for name are:
 
 For example:
 
-1. 
-    Specify a Base64 encoding modifier:
+1. Specify a Base64 encoding modifier:
 
 ```
 resource{encoding:base64}
 ```
 
-1. 
-    Include a CRC32 checksum in the response:
+1. Include a CRC32 checksum in the response:
 
 ```
 resource{checksum:crc32}
 ```
 
-1. 
-    Reformat the multimedia image to the gif format:
+1. Reformat the multimedia image to the gif format:
 
 ```
 resource{format:gif}
 ```
 
-1. 
-    Resize the multimedia image to a height of 300 pixels:
+1. Resize the multimedia image to a height of 300 pixels:
 
 ```
 resource{height:300}
 ```
 
-1. 
-    Resize the multimedia image to a width of 300 pixels:
+1. Resize the multimedia image to a width of 300 pixels:
 
 ```
 resource{width:300}
 ```
 
-1. 
-    Resize the multimedia image to a height & width of 300 pixels and do not maintain aspect ratio:
+1. Resize the multimedia image to a height & width of 300 pixels and do not maintain aspect ratio:
 
 ```
 resource{height:300, width:300, aspectratio:no}
@@ -2055,7 +2045,7 @@ resource{height:300, width:300}
 
 This example shows the retrieval of the multimedia title and setting a *format*, *width* & *height* modifier to the resource information for the master multimedia image attached to a narratives record:
 
-```
+```[php]
 $columns = array
 (
     'image.(MulTitle, resource{format:jpeg, height:600, width:600, checksum:md5})',
@@ -2110,9 +2100,9 @@ The IMu server provides a solution to this. When a handler object is created, a 
 
 The following example illustrates the connection of a second, independently created `IMuModule` object to the same server-side object:
 
-```
+```[php]
 // Create a module object as usual
-$first = new Module('eparties', $session);
+$first = new IMuModule('eparties', $session);
 
 // Run a search - this will create a server-side object
 $keys = array(1, 2, 3, 4, 5, 42);
@@ -2122,7 +2112,7 @@ $first->findKeys($keys);
 $result1 = $first->fetch('start', 0, 2, 'SummaryData');
 
 // Create a second module object
-$second = new Module('eparties', $session);
+$second = new IMuModule('eparties', $session);
 
 /*
  * Attach it to the same server-side object as the first module. This is
@@ -2140,8 +2130,8 @@ While this example illustrates the use of the id property, it is not particularl
 
 By default the IMu server destroys all server-side objects when a session finishes. This means that unless the server is explicitly instructed not to do so, the server-side object may be destroyed when the connection from the first page is closed. Telling the server to maintain the server-side object only requires that the `destroy` property on the object is set to false before calling any of its methods. In the example above, the server would be instructed not to destroy the object as follows:
 
-```
-$module = new Module('eparties', $session);
+```[php]
+$module = new IMuModule('eparties', $session);
 $module->setDestroy(false);
 $keys = array(1, 2, 3, 4, 5, 42);
 $module->findKeys($keys);
@@ -2155,16 +2145,16 @@ The problem comes when the next page connects to the server again. When the conn
 
 The solution to this problem is relatively straightforward. Before the first request closes the connection to its server, it must notify the server that subsequent requests need to connect explicitly to that process. This is achieved by setting the `IMuSession` object’s `suspend` property to *true* prior to submitting any request to the server:
 
-```
-$session = new Session('server.com', 12345);
-$module = new Module('eparties', $session);
+```[php]
+$session = new IMuSession('server.com', 12345);
+$module = new IMuModule('eparties', $session);
 $session->setSuspend(true);
 $module->findKeys($keys);
 ```
 
 The server handles a request to suspend a connection by starting to listen for connections on a second port. Unlike the primary port, this port is guaranteed to be used only by that particular server process. This means that a subsequent page can reconnect to a server on this second port and be guaranteed of connecting to the same server process. This in turn means that any saved server-side object will be accessible via its identifier. After the request has returned (in this example it was a call to `findKeys`), the `IMuSession` object’s `port` property holds the port number to reconnect to:
 
-```
+```[php]
 $session->setSuspend(true);
 $module->findKeys($keys);
 $reconnect = $session->port;
@@ -2176,7 +2166,7 @@ To illustrate we’ll modify the very simple results page of the [earlier sectio
 
 First build the search page, which is a plain HTML form:
 
-```
+```[html]
 <head>
   <title>Party Search</title>
 </head>
@@ -2191,14 +2181,13 @@ First build the search page, which is a plain HTML form:
 
 Next build the results page, which runs the search and displays the results. The steps to build the search page are outlined in detail below.
 
-1. 
-    Create an `IMuSession` object. Then the `port` property is set to a standard value unless a *port* parameter has been passed in the URL.
+1. Create an `IMuSession` object. Then the `port` property is set to a standard value unless a *port* parameter has been passed in the URL.
 
-    ```
+    ```[php]
     /*
     * Create new session object.
     */
-    $session = new Session();
+    $session = new IMuSession();
     $session->setHost('imu.mel.kesoftware.com');
 
     /* 
@@ -2210,10 +2199,9 @@ Next build the results page, which runs the search and displays the results. The
     $session->setPort($port);
     ```
 
-1. 
-    Connect to the server and immediately set the `suspend` property to *true* to tell the server that we may want to connect again:
+1. Connect to the server and immediately set the `suspend` property to *true* to tell the server that we may want to connect again:
 
-    ```
+    ```[php]
     /*
     * Establish connection and tell the server we may want to re-connect
     */
@@ -2223,23 +2211,21 @@ Next build the results page, which runs the search and displays the results. The
 
     This ensures the server listens on a new, unique port.
 
-1. 
-    Create the client-side `IMuModule` object and set its destroy property to *false*:
+1. Create the client-side `IMuModule` object and set its destroy property to *false*:
 
-    ```
+    ```[php]
     /* 
     * Create module object and tell the server not to destroy it.
     */
-    $module = new Module('eparties', $session);
+    $module = new IMuModule('eparties', $session);
     $module->setDestroy(false);
     ```
 
     This ensures that the server will not destroy the corresponding server-side object when the session ends.
 
-1. 
-    If the URL included a *name* parameter, we need to do a new search. Alternatively, if it included an *id* parameter, we need to connect to an existing server-side object:
+1. If the URL included a *name* parameter, we need to do a new search. Alternatively, if it included an *id* parameter, we need to connect to an existing server-side object:
 
-    ```
+   ```[php]
     /* If name is supplied, do new search. The search term is passed from
     ** search.html using GET
     */
@@ -2267,10 +2253,9 @@ Next build the results page, which runs the search and displays the results. The
     }
     ```
 
-1. 
-    Build a list of columns to fetch:
+1. Build a list of columns to fetch:
 
-    ```
+    ```[php]
     $columns = array
     (
         'NamFirst',
@@ -2278,10 +2263,9 @@ Next build the results page, which runs the search and displays the results. The
     );
     ```
 
-1. 
-    If the URL included a *rownum* parameter, fetch records starting from there. Otherwise start from record number *1*:
+1. If the URL included a *rownum* parameter, fetch records starting from there. Otherwise start from record number *1*:
 
-    ```
+    ```[php]
     /*
     * Work out which block of records to fetch
     */
@@ -2290,10 +2274,9 @@ Next build the results page, which runs the search and displays the results. The
         $rownum = $_GET['rownum'];
     ```
 
-1. 
-    Build the main page:
+1. Build the main page:
 
-    ```
+    ```[php]
     /*
     * Fetch next five records
     */
@@ -2328,10 +2311,9 @@ Next build the results page, which runs the search and displays the results. The
     <?php
     ```
 
-1. 
-    Finally, add the *Prev* and *Next* links to allow the user to page backwards and forwards through the results. This is the most complicated part! First, to ensure that a connection is made to the same server and server-side object, add the appropriate *port* and *id* parameters to the link URL:
+1. Finally, add the *Prev* and *Next* links to allow the user to page backwards and forwards through the results. This is the most complicated part! First, to ensure that a connection is made to the same server and server-side object, add the appropriate *port* and *id* parameters to the link URL:
 
-    ```
+    ```[php]
     /*
     * Add the Prev and Next links
     */
@@ -2340,10 +2322,9 @@ Next build the results page, which runs the search and displays the results. The
     $url .= '&id=' . $module->id;
     ```
 
-1. 
-    If the first record is not showing add a Prev link to allow the user to go back one page in the result set. Similarly, if the last record is not showing add a *Next* link to allow the user to go forward one page:
+1. If the first record is not showing add a Prev link to allow the user to go back one page in the result set. Similarly, if the last record is not showing add a *Next* link to allow the user to go forward one page:
 
-    ```
+    ```[php]
     $first = $results->rows[0];
     if ($first['rownum'] > 1)
     {
@@ -2446,8 +2427,8 @@ The method returns an associative array. This associative array contains an entr
 
 <h3 id="6-1-3-example">Example</h3>
 
-```
-$parties = new Module('eparties', $session);
+```[php]
+$parties = new IMuModule('eparties', $session);
 
 /* Specify the values to insert.
 */
@@ -2552,11 +2533,11 @@ applied.
 
 <h3 id="6-2-3-example">Example</h3>
 
-```
+```[php]
 /* Find all parties records that have a first name of "Chris" and a last name
 ** of "Froome".
 */
-$parties = new Module('eparties', $session);
+$parties = new IMuModule('eparties', $session);
 $terms = new IMuTerms();
 $terms->add('NamFirst', 'Chris');
 $terms->add('NamLast', 'Froome');
@@ -2639,11 +2620,11 @@ The method returns an integer that specifies the number of records that were rem
 
 <h3 id="6-3-3-example">Example</h3>
 
-```
+```[php]
 /* Find all parties records that have a first name of "Christopher" and a last
 ** name of "Froome".
 */
-$parties = new Module('eparties', $session);
+$parties = new IMuModule('eparties', $session);
 $terms = new IMuTerms();
 $terms->add('NamFirst', 'Christopher');
 $terms->add('NamLast', 'Froome');
@@ -2676,7 +2657,7 @@ When an error occurs, the IMu PHP API throws an exception. The exception is an [
 
 For simple error handling all that is usually required is to catch the exception and report the exception as a string:
 
-```
+```[php]
 try
 {
     // ⋯
@@ -2692,10 +2673,10 @@ The `IMuException` class overrides the `Exception` classes `__toString` method (
 
 To handle specific IMu errors it is necessary to check the exception is an `IMuException` object before using it. The `IMuException` class includes a property called id. This is a string and contains the internal IMu error code for the exception. For example, you may want to catch the exception raised when an `Session` objects `connect` method fails and try to connect to an alternative server:
 
-```
+```[php]
 $mainServer = 'server1.com';
 $alternativeServer = 'server2.com';
-$session = new Session;
+$session = new IMuSession;
 $session->host = $mainServer;
 try
 {
