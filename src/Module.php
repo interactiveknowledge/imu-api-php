@@ -405,8 +405,7 @@ class Module extends Handler
 	public function
 	findTerms($terms, $options = null)
 	{
-		$class = 'Terms';
-		if ($terms instanceof $class)
+		if ($terms instanceof Terms)
 		{
 			$terms = $terms->toArray();
 		}
