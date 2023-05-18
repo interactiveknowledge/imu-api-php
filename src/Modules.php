@@ -157,8 +157,7 @@ class Modules extends Handler
 	public function
 	findTerms($terms, $include = null)
 	{
-		$class = 'IMuTerms';
-		if ($terms instanceof $class)
+		if ($terms instanceof IMuTerms)
 		{
 			$terms = $terms->toArray();
 		}
