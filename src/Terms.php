@@ -66,7 +66,7 @@ class Terms
 {
 	/* Constructor */
 	/*!
-	** Creates a new `IMuTerms` object with the given ``kind``.
+	** Creates a new `Terms` object with the given ``kind``.
 	** 
 	** @param $kind string
 	**   The `boolean` operator for search terms.
@@ -133,10 +133,10 @@ class Terms
 	**
 	** @param $kind string
 	**   The boolean operator used for search terms added to the 
-	**   returned `IMuTerms` object.
+	**   returned `Terms` object.
 	** 
-	** @returns IMuTerms
-	**   The newly added `IMuTerms` object.
+	** @returns Terms
+	**   The newly added `Terms` object.
 	*/
 	public function
 	addTerms($kind)
@@ -153,8 +153,8 @@ class Terms
 	** @code
 	**   addTerms('and');
 	**
-	** @returns IMuTerms
-	**   The newly added `IMuTerms` object.
+	** @returns Terms
+	**   The newly added `Terms` object.
 	*/
 	public function
 	addAnd()
@@ -169,8 +169,8 @@ class Terms
 	** @code
 	**   addTerms('or');
 	**
-	** @returns IMuTerms
-	**   The newly added `IMuTerms` object.
+	** @returns Terms
+	**   The newly added `Terms` object.
 	*/
 	public function
 	addOr()
@@ -179,10 +179,10 @@ class Terms
 	}
 
 	/*!
-	** Returns the `IMuTerms` object as an array.
+	** Returns the `Terms` object as an array.
 	**
-	** @returns IMuTerms[]
-	**   The `IMuTerms` object as an array.
+	** @returns Terms[]
+	**   The `Terms` object as an array.
 	*/
 	public function
 	toArray()
@@ -194,7 +194,7 @@ class Terms
 		for ($i = 0; $i < count($this->list); $i++)
 		{
 			$term = $this->list[$i];
-			if ($term instanceof IMuTerms)
+			if ($term instanceof Terms)
 			{
 				$term = $term->toArray();
 			}
@@ -206,10 +206,10 @@ class Terms
 	}
 
 	/*!
-	** Returns a `string` representation of the `IMuTerms` object.
+	** Returns a `string` representation of the `Terms` object.
 	**
 	** @returns string
-	**   A `string` representation of the `IMuTerms` object.
+	**   A `string` representation of the `Terms` object.
 	*/
 	public function
 	__toString()
@@ -224,7 +224,7 @@ class Terms
 				$result .= ', ';
 			}
 			$term = $this->list[$i];
-			if ($term instanceof IMuTerms)
+			if ($term instanceof Terms)
 			{
 				$term = $term->__toString();
 			}
